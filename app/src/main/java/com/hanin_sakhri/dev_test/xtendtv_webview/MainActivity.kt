@@ -12,13 +12,13 @@ import android.util.Log
 import android.webkit.ConsoleMessage
 import android.webkit.WebChromeClient
 import android.webkit.WebView
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import com.hanin_sakhri.dev_test.xtendtv_webview.utils.XtendtvWebViewClient
+import com.hanin_sakhri.dev_test.xtendtv_webview.viewModel.XHRViewModel
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var xtendtvWebView :WebView
+    private val viewModel = XHRViewModel()
 
     @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,7 +33,8 @@ class MainActivity : AppCompatActivity() {
         }
         else{
             //Run the webView
-            xtendtvWebView.webViewClient = XtendtvWebViewClient()
+
+            xtendtvWebView.webViewClient = XtendtvWebViewClient(viewModel)
             xtendtvWebView.apply {
                 loadUrl("https://google.com")
                 settings.javaScriptEnabled = true
@@ -50,12 +51,11 @@ class MainActivity : AppCompatActivity() {
                 val message = consoleMessage?.message() ?: ""
                 // Handle XHR messages and display them
                 if (message.contains("XMLHttpRequest")) {
-                    Log.d("Xhr","$message")
+                    Log.d("Xhr", message)
                 }
                 return true
             }
         }
-
 
 
     }
@@ -78,6 +78,7 @@ class MainActivity : AppCompatActivity() {
             super.onBackPressed()
     }
 
+    //check network availability
     private fun isNetworkAvailable(): Boolean {
         val connectionManager =
             this@MainActivity.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
@@ -86,6 +87,7 @@ class MainActivity : AppCompatActivity() {
         return networkInfo != null && networkInfo.isConnectedOrConnecting
     }
 
+    //Error dialog in case no network available
     private fun showErrorDialog(title: String, message: String, context: Context) {
         val dialog = AlertDialog.Builder(context)
         dialog.setTitle(title)
