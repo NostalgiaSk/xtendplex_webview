@@ -1,4 +1,4 @@
-package com.hanin_sakhri.dev_test.xtendtv_webview
+package com.hanin_sakhri.dev_test.xtendtv_webview.ui
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
@@ -12,6 +12,8 @@ import android.util.Log
 import android.webkit.ConsoleMessage
 import android.webkit.WebChromeClient
 import android.webkit.WebView
+import android.widget.Button
+import com.hanin_sakhri.dev_test.xtendtv_webview.R
 import com.hanin_sakhri.dev_test.xtendtv_webview.utils.XtendtvWebViewClient
 import com.hanin_sakhri.dev_test.xtendtv_webview.viewModel.XHRViewModel
 
@@ -19,6 +21,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var xtendtvWebView :WebView
     private val viewModel = XHRViewModel()
+
 
     @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,7 +60,14 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        val trackButton = findViewById<Button>(R.id.track_urls)
+        trackButton.setOnClickListener{
 
+            try {
+                val customDialog = CustomDialog(this, viewModel.getXhrList())
+                customDialog.show()
+            }catch (e:Exception){Log.d("dialogError",e.toString())}
+        }
     }
 
 
@@ -105,4 +115,9 @@ class MainActivity : AppCompatActivity() {
     }
 
 
+
 }
+
+
+
+

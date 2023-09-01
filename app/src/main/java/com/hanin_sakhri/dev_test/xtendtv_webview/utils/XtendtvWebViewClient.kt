@@ -6,7 +6,6 @@ import android.webkit.WebResourceResponse
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.Toast
-import androidx.lifecycle.ViewModelProvider
 import com.hanin_sakhri.dev_test.xtendtv_webview.model.XhrRequest
 import com.hanin_sakhri.dev_test.xtendtv_webview.viewModel.XHRViewModel
 
@@ -22,9 +21,8 @@ class XtendtvWebViewClient(private val xhrViewModel: XHRViewModel) : WebViewClie
 
     override fun onPageFinished(view: WebView, url: String) {
         super.onPageFinished(view, url)
-        xhrViewModel.addXhr(XhrRequest(url,""))
 //        xhrRequests = xhrViewModel.getXhrList() as MutableList<XhrRequest>
-//        Log.d("List" ,"$xhrRequests")
+        Log.d("FinalUrl" ,url)
 
     }
 
@@ -33,7 +31,12 @@ class XtendtvWebViewClient(private val xhrViewModel: XHRViewModel) : WebViewClie
         view: WebView?,
         request: WebResourceRequest?
     ): WebResourceResponse? {
-        Log.d("interceptXHR", "${request?.method} ${request?.url}")
+        //Log.d("interceptXHR", "${request?.method} ${request?.url}")
+        if (request != null) {
+            xhrViewModel.addXhr(XhrRequest(request.url.toString(),request.method))
+        }
+         xhrRequests = xhrViewModel.getXhrList() as MutableList<XhrRequest>
+         Log.d("XhrList" ,"$xhrRequests")
         return super.shouldInterceptRequest(view, request)
     }
 
