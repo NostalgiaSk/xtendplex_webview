@@ -22,14 +22,13 @@ class XhrReissuing : AppCompatActivity() {
 
         responseWebView = findViewById(R.id.webview_response)
 
-        val responseBody = intent.getStringExtra("responseBody")
         val responseURL = intent.getStringExtra("responseURL")
-        Log.d("responseBody", responseBody.toString())
+        Log.d("responseBody", responseURL.toString())
 
         val webSettings: WebSettings = responseWebView.settings
         webSettings.javaScriptEnabled = true
 
-        if (responseBody != null) {
+        if (responseURL != null) {
             responseWebView.loadUrl(responseURL.toString())
         }
 

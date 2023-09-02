@@ -2,11 +2,9 @@ package com.hanin_sakhri.dev_test.xtendtv_webview.ui
 
 import android.app.Activity
 import android.app.Dialog
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.hanin_sakhri.dev_test.xtendtv_webview.R
@@ -52,18 +50,15 @@ class CustomDialog(
                     override fun onResponse(call: Call, response: Response) {
                          responseBody = response.body?.string().toString()
                         responseURL =response.request.url.toString()
-                        // Process responseBody as needed
                         Log.d("response",responseBody.toString())
                         Log.d("urlBase",response.request.url.toString())
 
-                        // Ensure you update UI components on the main thread if necessary
                         activity.runOnUiThread {
                             activeRequests.remove(request)
                         }
                     }
                 })
             }
-
 
 
             val intent = Intent(context,XhrReissuing::class.java)
