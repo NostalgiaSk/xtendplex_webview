@@ -5,6 +5,7 @@ import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.Button
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.hanin_sakhri.dev_test.xtendtv_webview.R
@@ -25,6 +26,12 @@ class CustomDialog(
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.costum_dialog_layout)
+
+        val closeButton =findViewById<Button>(R.id.dismissBtn)
+        closeButton.setOnClickListener {
+            dismiss()
+        }
+
         recyclerView = findViewById(R.id.xhr_recyclerView)
         val adapter = XhrItemAdapter(xhrItems)
         recyclerView.layoutManager = LinearLayoutManager(context)
@@ -36,15 +43,17 @@ class CustomDialog(
                 .url(xhrRequest.url)
                 .method(xhrRequest.method, null)
                 .build()
+
+            //checking if there is a similar active request to the built request then re-running it
             if (isSimilarRequestActive(request)) {
-                // Handle the case where a similar request is already active
+                Log.d("Duplicate Request", "A similar request is already active")
             } else {
                 activeRequests.add(request)
 
                 client.newCall(request).enqueue(object : Callback {
                     override fun onFailure(call: Call, e: IOException) {
-                        // Handle the failure here
                         activeRequests.remove(request)
+                        Log.e("Request Failure", e.toString())
                     }
 
                     override fun onResponse(call: Call, response: Response) {
@@ -55,16 +64,16 @@ class CustomDialog(
 
                         activity.runOnUiThread {
                             activeRequests.remove(request)
+                            val intent = Intent(context,XhrReissuing::class.java)
+                            intent.putExtra("responseBody", responseBody)
+                            intent.putExtra("responseURL", responseURL)
+                            activity.startActivity(intent)
                         }
                     }
                 })
             }
 
 
-            val intent = Intent(context,XhrReissuing::class.java)
-            intent.putExtra("responseBody", responseBody)
-            intent.putExtra("responseURL", responseURL)
-            activity.startActivity(intent)
 
         }
     }

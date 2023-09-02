@@ -21,6 +21,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var xtendtvWebView :WebView
     private val viewModel = XHRViewModel()
+    private val baseUrl ="https://xtendplex.com/"
 
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -35,11 +36,10 @@ class MainActivity : AppCompatActivity() {
                 this@MainActivity)
         }
         else{
-            //Run the webView
 
             xtendtvWebView.webViewClient = XtendtvWebViewClient(viewModel)
             xtendtvWebView.apply {
-                loadUrl("https://xtendplex.com/")
+                loadUrl(baseUrl)
                 settings.javaScriptEnabled = true
             }
         }

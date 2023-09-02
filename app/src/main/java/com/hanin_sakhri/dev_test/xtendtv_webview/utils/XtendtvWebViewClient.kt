@@ -21,7 +21,6 @@ class XtendtvWebViewClient(private val xhrViewModel: XHRViewModel) : WebViewClie
 
     override fun onPageFinished(view: WebView, url: String) {
         super.onPageFinished(view, url)
-//        xhrRequests = xhrViewModel.getXhrList() as MutableList<XhrRequest>
         Log.d("FinalUrl" ,url)
 
     }
@@ -31,7 +30,6 @@ class XtendtvWebViewClient(private val xhrViewModel: XHRViewModel) : WebViewClie
         view: WebView?,
         request: WebResourceRequest?
     ): WebResourceResponse? {
-        //Log.d("interceptXHR", "${request?.method} ${request?.url}")
         if (request != null) {
             xhrViewModel.addXhr(XhrRequest(request.url.toString(),request.method))
         }
