@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity() {
 
             xtendtvWebView.webViewClient = XtendtvWebViewClient(viewModel)
             xtendtvWebView.apply {
-                loadUrl("https://google.com")
+                loadUrl("https://xtendplex.com/")
                 settings.javaScriptEnabled = true
             }
         }
@@ -69,12 +69,6 @@ class MainActivity : AppCompatActivity() {
             }catch (e:Exception){Log.d("dialogError",e.toString())}
         }
     }
-
-
-
-
-
-
 
 
 

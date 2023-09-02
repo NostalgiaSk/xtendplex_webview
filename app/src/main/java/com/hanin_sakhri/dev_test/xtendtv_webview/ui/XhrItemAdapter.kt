@@ -11,6 +11,8 @@ import com.hanin_sakhri.dev_test.xtendtv_webview.model.XhrRequest
 class XhrItemAdapter(private val xhrRequests: List<XhrRequest>) : RecyclerView.Adapter<XhrItemAdapter.ItemViewHolder>() {
 
 
+    var onItemClick :((XhrRequest)->Unit)?=null
+
     class ItemViewHolder(itemView:View) :RecyclerView.ViewHolder(itemView) {
         val xhrMethod: TextView = itemView.findViewById(R.id.xhr_method)
         val xhrBody: TextView = itemView.findViewById(R.id.xhr_body)
@@ -29,5 +31,9 @@ class XhrItemAdapter(private val xhrRequests: List<XhrRequest>) : RecyclerView.A
         val xhr = xhrRequests[position]
         holder.xhrMethod.text = xhr.method
         holder.xhrBody.text = xhr.url
+        
+        holder.itemView.setOnClickListener{
+            onItemClick?.invoke(xhr)
+        }
     }
 }
